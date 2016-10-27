@@ -1,0 +1,23 @@
+{
+  "name": "node-iohook",
+  "version": "0.0.1",
+  "description": "binding library for libuiohook",
+  "main": "index.js",
+  "scripts": {
+    "test": "test",
+    "install": "cmake-js compile"
+  },
+  "keywords": [
+    "uiohook",
+    "hook",
+    "keyboard",
+    "hook",
+    "mouse"
+  ],
+  "author": "Ayoub Serti",
+  "license": "GPL-3.0",
+  "dependencies": {
+    "bindings": "^1.2.1",
+    "nan": "^2.4.0"
+  }
+}
