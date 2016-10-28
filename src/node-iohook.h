@@ -4,14 +4,20 @@
 
 #include <nan_object_wrap.h>
 
-class HookWorker : public Nan::AsyncWorker
-{
-    public:
-        HookWorker(Nan::Callback * callback); 
-            
-    void Execute();
-    void HandleOKCallback () ;
+#include "uiohook.h"
 
-    private:
-		int a;
+class HookProcessWorker : public Nan::AsyncProgressWorkerBase<uiohook_event>
+{
+	public:
+
+		typedef  Nan::AsyncProgressWorkerBase<uiohook_event>::ExecutionProgress HookExecution;
+
+		HookProcessWorker(Nan::Callback * callback);
+
+		void Execute(const ExecutionProgress& progress);
+
+		void HandleProgressCallback(const uiohook_event *data, size_t size);
+
+		const HookExecution* fHookExecution;
+		
 };
