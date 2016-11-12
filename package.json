@@ -4,8 +4,8 @@
   "description": "binding library for libuiohook",
   "main": "index.js",
   "scripts": {
-    "test": "test",
-    "install": "cmake-js compile --runtime"
+    "test": "node test.js",
+    "install": "cmake-js compile"
   },
   "keywords": [
     "uiohook",
