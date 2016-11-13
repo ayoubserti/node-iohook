@@ -9,6 +9,7 @@ environment:
 # Install scripts. (runs after repo cloning)
 install:
   # Get the latest stable version of Node 0.STABLE.latest
+  - git submodule update --init
   - ps: Install-Product node $env:nodejs_version
   - npm -g install npm
   # Typical npm stuff.
