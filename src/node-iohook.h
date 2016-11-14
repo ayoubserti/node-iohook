@@ -18,6 +18,8 @@ class HookProcessWorker : public Nan::AsyncProgressWorkerBase<uiohook_event>
 
 		void HandleProgressCallback(const uiohook_event *data, size_t size);
 
+		void Stop();
+
 		const HookExecution* fHookExecution;
 		
 };

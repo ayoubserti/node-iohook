@@ -19,7 +19,7 @@ class IOCallback{
 		return function(msg){
 			
 			if(that.active==false) return;
-
+			if(msg==undefined) {console.log(msg); return;}
 			if(msg.type==3)
 			{
 				if(that._cbObject["keypress"])
@@ -129,6 +129,10 @@ class IOHook {
 	resume()
 	{
 		this.callback.active = true;
+	}
+
+	stop(){
+		NodeHookAddon.stop_hook();
 	}
 
 }
