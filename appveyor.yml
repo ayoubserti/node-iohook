@@ -2,12 +2,15 @@
 
 # Test against these versions of Io.js and Node.js.
 environment:
+  os: Visual Studio 2013
   matrix:
   # node.js
     - nodejs_version: "6"
 os: Visual Studio 2013
+
 # Install scripts. (runs after repo cloning)
 install:
+  - set PATH=C:\Program Files (x86)\MSBuild\12.0\Bin;%PATH%
   # Get the latest stable version of Node 0.STABLE.latest
   - git submodule update --init
   - ps: Install-Product node $env:nodejs_version
