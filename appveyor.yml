@@ -5,7 +5,7 @@ environment:
   matrix:
   # node.js
     - nodejs_version: "6"
-
+os: Visual Studio 2013
 # Install scripts. (runs after repo cloning)
 install:
   # Get the latest stable version of Node 0.STABLE.latest
