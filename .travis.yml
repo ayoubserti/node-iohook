@@ -13,5 +13,6 @@ addons:
       - libxtst-dev
       - cmake
       - cmake-data
+      - x11-apps
 install:
   - npm install
