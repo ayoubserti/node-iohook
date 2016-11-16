@@ -18,28 +18,45 @@ project(node-iohook)
 if(WIN32 OR WIN64)
   #add libuihook project
   add_subdirectory(libuiohook ${CMAKE_CURRENT_SOURCE_DIR}/build/libuiohook)
-  
+
 elseif("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
-  
+
   #bootstrap and configure
   set(_config_headers "${CMAKE_CURRENT_SOURCE_DIR}/libuiohook/include/config.h")
   add_custom_target( "prepare_iuhook"
                       COMMAND "./bootstrap.sh"
                       COMMAND "./configure"
                       WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/libuiohook")
-  
-  file(GLOB SOURCE_UIHOOK_FILES "${CMAKE_CURRENT_SOURCE_DIR}/libuiohook/src/logger.c" 
-                                "${CMAKE_CURRENT_SOURCE_DIR}/libuiohook/src/logger.h" 
-                                "${CMAKE_CURRENT_SOURCE_DIR}/libuiohook/src/x11/*.c" 
+
+  file(GLOB SOURCE_UIHOOK_FILES "${CMAKE_CURRENT_SOURCE_DIR}/libuiohook/src/logger.c"
+                                "${CMAKE_CURRENT_SOURCE_DIR}/libuiohook/src/logger.h"
+                                "${CMAKE_CURRENT_SOURCE_DIR}/libuiohook/src/x11/*.c"
                                 "${CMAKE_CURRENT_SOURCE_DIR}/libuiohook/src/x11/*.h"
                                 "${CMAKE_CURRENT_SOURCE_DIR}/libuiohook/include/config.h" )
-                                
+
   add_library( "uiohook" STATIC ${SOURCE_UIHOOK_FILES} )
   set_target_properties("uiohook"  PROPERTIES COMPILE_FLAGS "-DHAVE_CONFIG_H=1 -fPIC")
   add_dependencies( "uiohook" "prepare_iuhook")
   target_include_directories("uiohook" PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/libuiohook/include/" "${CMAKE_CURRENT_SOURCE_DIR}/libuiohook/src" ${CMAKE_CURRENT_SOURCE_DIR}/libuiohook/src/x11 )
-  
-  
+else()
+#bootstrap and configure
+  set(_config_headers "${CMAKE_CURRENT_SOURCE_DIR}/libuiohook/include/config.h")
+  add_custom_target( "prepare_iuhook"
+                      COMMAND "./bootstrap.sh"
+                      COMMAND "./configure"
+                      WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/libuiohook")
+
+  file(GLOB SOURCE_UIHOOK_FILES "${CMAKE_CURRENT_SOURCE_DIR}/libuiohook/src/logger.c"
+                                "${CMAKE_CURRENT_SOURCE_DIR}/libuiohook/src/logger.h"
+                                "${CMAKE_CURRENT_SOURCE_DIR}/libuiohook/src/darwin/*.c"
+                                "${CMAKE_CURRENT_SOURCE_DIR}/libuiohook/src/darwin/*.h"
+                                "${CMAKE_CURRENT_SOURCE_DIR}/libuiohook/include/config.h" )
+
+  add_library( "uiohook" STATIC ${SOURCE_UIHOOK_FILES} )
+  set_target_properties("uiohook"  PROPERTIES COMPILE_FLAGS "-DHAVE_CONFIG_H=1")
+  add_dependencies( "uiohook" "prepare_iuhook")
+  target_include_directories("uiohook" PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/libuiohook/include/" "${CMAKE_CURRENT_SOURCE_DIR}/libuiohook/src" ${CMAKE_CURRENT_SOURCE_DIR}/libuiohook/src/darwin )
+
 endif()
 # Build a shared library named after the project from the files in `src/`
 file(GLOB SOURCE_FILES "src/*.cc" "src/*.h")
