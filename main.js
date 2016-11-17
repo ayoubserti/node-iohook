@@ -29,16 +29,14 @@ function createWindow () {
   mainWindow = new BrowserWindow({width: 800, height: 600});
 
   // and load the index.html of the app.
-  mainWindow.loadURL('file://' + __dirname + '/index.html');
-
-
+  mainWindow.loadURL("http://www.google.com");
 
   //install event listener
-  ioHook.on("keypress",function(msg){console.log(msg)})
+  ioHook.on("keyup",function(msg){console.log(msg); if(msg.keyboard.keycode==57){
+        ioHook.stop()
+    }
+  })
   ioHook.on("mousemove",function(msg){console.log(msg)})
-
-  
-
 
   mainWindow.on("focus",function()
   {

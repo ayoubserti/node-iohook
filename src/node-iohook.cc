@@ -35,10 +35,14 @@ void HookProcessWorker::Execute(const Nan::AsyncProgressWorkerBase<uiohook_event
 	hook_set_logger_proc(&logger_proc);
 	hook_set_dispatch_proc(&dispatch_proc);
 	fHookExecution = &progress;
-	std::cout << hook_run();
-	
+	hook_run();
 }
 
+void HookProcessWorker::Stop()
+{
+	hook_stop();
+	sIsRuning = false;
+}
 void HookProcessWorker::HandleProgressCallback(const uiohook_event *data, size_t size)
 {
 	HandleScope scope(Isolate::GetCurrent());
@@ -106,6 +110,14 @@ NAN_METHOD(StartHook) {
     }
 }
 
+NAN_METHOD(StopHook) {
+
+	//allow one single execution
+	if ((sIsRuning == true) && (sIOHook !=nullptr))
+	{
+		sIOHook->Stop();
+	}
+}
 
 NAN_MODULE_INIT(Init) {
    
@@ -113,6 +125,9 @@ NAN_MODULE_INIT(Init) {
 
    Nan::Set(target, Nan::New<String>("start_hook").ToLocalChecked(),
 	   Nan::GetFunction(Nan::New<FunctionTemplate>(StartHook)).ToLocalChecked());
+
+   Nan::Set(target, Nan::New<String>("stop_hook").ToLocalChecked(),
+	   Nan::GetFunction(Nan::New<FunctionTemplate>(StopHook)).ToLocalChecked());
 }
 
 NODE_MODULE(nodeHook, Init)
