@@ -1,32 +1,25 @@
-# http://www.appveyor.com/docs/appveyor-yml
-
-# Test against these versions of Io.js and Node.js.
-environment:
-  os: Visual Studio 2013
-  matrix:
-  # node.js
-    - nodejs_version: "6"
-os: Previous Visual Studio 2013
-
-# Install scripts. (runs after repo cloning)
-install:
-  - set PATH=C:\Program Files (x86)\MSBuild\12.0\Bin;%PATH%
-  # Get the latest stable version of Node 0.STABLE.latest
-  - git submodule update --init
-  - ps: Install-Product node $env:nodejs_version
-  - npm -g install npm
-  # Typical npm stuff.
-  - npm install
-
-# Post-install test scripts.
-test_script:
-  # Output useful info for debugging.
-  - node --version
-  - npm --version
-  - npm test
-
-# Don't actually build.
-build: off
-
-# Set build version format here instead of in the admin panel.
+os: Visual Studio 2015
 version: "{build}"
+build: off
+skip_tags: true
+
+environment:
+  matrix:
+    - nodejs_version: "7"
+
+platform:
+  - x86
+  - x64
+
+install:
+  - ps: Install-Product node $env:nodejs_version $env:platform
+  - npm -g i npm@latest
+  - set PATH=%APPDATA%\npm;%APPVEYOR_BUILD_FOLDER%\node_modules\.bin;%PATH%
+  - set PATH=C:\Program Files (x86)\MSBuild\12.0\Bin;%PATH%
+  - npm i --ignore-scripts
+  - for /f %%i in ('node -v') do set exact_nodejs_version=%%i
+  - git submodule update --init --recursive
+  - cmake-js.cmd compile
+
+on_success:
+ - for %%i in (prebuilds\*) do appveyor PushArtifact %%i
