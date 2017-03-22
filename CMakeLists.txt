@@ -18,7 +18,8 @@ project(node-iohook)
 if(WIN32 OR WIN64)
   #add libuihook project
   set(_config_headers "${CMAKE_CURRENT_SOURCE_DIR}/libuiohook/include/config.h")
-  file(GLOB SOURCE_UIHOOK_FILES "${CMAKE_CURRENT_SOURCE_DIR}/libuiohook/src/logger.c"
+  file(GLOB SOURCE_UIHOOK_FILES "${CMAKE_CURRENT_SOURCE_DIR}/libuiohook/include/uiohook.h"
+                                "${CMAKE_CURRENT_SOURCE_DIR}/libuiohook/src/logger.c"
                                 "${CMAKE_CURRENT_SOURCE_DIR}/libuiohook/src/logger.h"
                                 "${CMAKE_CURRENT_SOURCE_DIR}/src/windows/input_helper.h"
                                 "${CMAKE_CURRENT_SOURCE_DIR}/src/windows/input_helper.c"
